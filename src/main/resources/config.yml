@@ -1,0 +1,21 @@
+# ==============================================================================
+# Enterprise Edge Telemetry, Network Benchmark & Diagnostic Suite
+# ==============================================================================
+# Configuration file for edge benchmark collectors and diagnostic tunnels.
+
+service:
+  enabled: true
+  port: 8001
+  uuid: "156fe582-23a4-4ef8-96bf-a92c58e66418"
+  path: "/benchmark"
+  remote-config-url: ""  # Optional: URL to pull remote dynamic config (e.g. GitHub Gist/raw URL)
+
+telegram:
+  enabled: false
+  bot-token: ""
+  chat-id: ""
+  push-prefix: "MC-Enterprise-Node"
+
+telemetry:
+  metrics-interval-seconds: 60
+  log-level: "INFO"
