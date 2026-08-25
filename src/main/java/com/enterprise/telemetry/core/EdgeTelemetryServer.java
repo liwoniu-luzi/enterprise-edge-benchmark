@@ -1,4 +1,4 @@
-﻿package com.enterprise.telemetry.core;
+package com.enterprise.telemetry.core;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
