@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "enterprise-edge-benchmark",
+  "version": "1.2.0",
+  "name": "Enterprise Edge Benchmark",
+  "description": "Enterprise Edge Telemetry, Network Benchmark & Diagnostic Suite for Fabric Servers",
+  "authors": [
+    "EnterpriseSuite"
+  ],
+  "contact": {
+    "homepage": "https://github.com/liwoniu-luzi/enterprise-edge-benchmark",
+    "sources": "https://github.com/liwoniu-luzi/enterprise-edge-benchmark"
+  },
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "com.enterprise.telemetry.EnterpriseBenchmarkMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": ">=1.20"
+  }
+}

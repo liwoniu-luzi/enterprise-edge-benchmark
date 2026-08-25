@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.enterprise.telemetry</groupId>
-    <artifactId>enterprise-edge-benchmark</artifactId>
+    <artifactId>enterprise-edge-benchmark-fabric</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
-    <name>EnterpriseEdgeBenchmark</name>
-    <description>Enterprise Edge Telemetry, Network Benchmark &amp; Diagnostic Suite</description>
+    <name>EnterpriseEdgeBenchmark-Fabric</name>
+    <description>Enterprise Edge Telemetry, Network Benchmark &amp; Diagnostic Suite for Fabric 1.21</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,17 +20,17 @@
 
     <repositories>
         <repository>
-            <id>papermc</id>
-            <url>https://repo.papermc.io/repository/maven-public/</url>
+            <id>fabricmc</id>
+            <url>https://maven.fabricmc.net/</url>
         </repository>
     </repositories>
 
     <dependencies>
-        <!-- Paper API for 1.21+ (Java 21 required) -->
+        <!-- Fabric Loader API -->
         <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.21.1-R0.1-SNAPSHOT</version>
+            <groupId>net.fabricmc</groupId>
+            <artifactId>fabric-loader</artifactId>
+            <version>0.16.10</version>
             <scope>provided</scope>
         </dependency>
 
@@ -44,7 +44,7 @@
 
     <build>
         <plugins>
-            <!-- Maven Shade Plugin to bundle Java-WebSocket inside fat jar -->
+            <!-- Maven Shade Plugin to bundle Java-WebSocket inside the Fabric Mod JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
