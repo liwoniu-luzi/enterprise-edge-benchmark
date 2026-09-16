@@ -6,11 +6,11 @@
 
     <groupId>com.enterprise.telemetry</groupId>
     <artifactId>enterprise-edge-benchmark-fabric</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
 
     <name>EnterpriseEdgeBenchmark-Fabric</name>
-    <description>Enterprise Edge Telemetry, Network Benchmark &amp; Diagnostic Suite for Fabric 1.21</description>
+    <description>Enterprise Edge Telemetry, Network Benchmark &amp; Diagnostic Suite for All Minecraft/Fabric Versions with Auto Port Detection</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

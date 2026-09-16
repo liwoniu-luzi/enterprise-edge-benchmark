@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "enterprise-edge-benchmark",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "name": "Enterprise Edge Benchmark",
-  "description": "Enterprise Edge Telemetry & Network Benchmark for All Minecraft/Fabric Versions",
+  "description": "Enterprise Edge Telemetry & Network Benchmark for All Minecraft/Fabric Versions with Auto Port Detection & Telegram Reporting",
   "authors": [
     "EnterpriseSuite"
   ],
